@@ -1,0 +1,11 @@
+
+use_frameworks!
+target 'MSAPM' do
+    pod 'MSAPM', :path => '../../MSAPM.podspec'
+    # pod 'FMDB'
+  target 'MSAPMTests' do
+    inherit! :search_paths
+
+    
+  end
+end
