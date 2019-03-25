@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "MSAPM"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "IOS 性能监控."
   s.swift_version    = '4.1'
   # This description is used to generate tags and improve search results.
