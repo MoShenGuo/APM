@@ -7,6 +7,52 @@
 
 #include "MSCallTraceCore.h"
 
+//#if (GCC_VERSION >= 40100)
+///* 内存访问栅 */
+//#define barrier()                 (__sync_synchronize())
+///* 原子获取 */
+//#define AO_GET(ptr)               ({ __typeof__(*(ptr)) volatile *_val = (ptr); barrier(); (*_val); })
+///*原子设置，如果原值和新值不一样则设置*/
+//#define AO_SET(ptr, value)        ((void)__sync_lock_test_and_set((ptr), (value)))
+///* 原子交换，如果被设置，则返回旧值，否则返回设置值 */
+//#define AO_SWAP(ptr, value)       ((__typeof__(*(ptr)))__sync_lock_test_and_set((ptr), (value)))
+///* 原子比较交换，如果当前值等于旧值，则新值被设置，返回旧值，否则返回新值*/
+//#define AO_CAS(ptr, comp, value)  ((__typeof__(*(ptr)))__sync_val_compare_and_swap((ptr), (comp), (value)))
+///* 原子比较交换，如果当前值等于旧指，则新值被设置，返回真值，否则返回假 */
+//#define AO_CASB(ptr, comp, value) (__sync_bool_compare_and_swap((ptr), (comp), (value)) != 0 ? true : false)
+///* 原子清零 */
+//#define AO_CLEAR(ptr)             ((void)__sync_lock_release((ptr)))
+///* 通过值与旧值进行算术与位操作，返回新值 */
+//#define AO_ADD_F(ptr, value)      ((__typeof__(*(ptr)))__sync_add_and_fetch((ptr), (value)))
+//#define AO_SUB_F(ptr, value)      ((__typeof__(*(ptr)))__sync_sub_and_fetch((ptr), (value)))
+//#define AO_OR_F(ptr, value)       ((__typeof__(*(ptr)))__sync_or_and_fetch((ptr), (value)))
+//#define AO_AND_F(ptr, value)      ((__typeof__(*(ptr)))__sync_and_and_fetch((ptr), (value)))
+//#define AO_XOR_F(ptr, value)      ((__typeof__(*(ptr)))__sync_xor_and_fetch((ptr), (value)))
+///* 通过值与旧值进行算术与位操作，返回旧值 */
+//#define AO_F_ADD(ptr, value)      ((__typeof__(*(ptr)))__sync_fetch_and_add((ptr), (value)))
+//#define AO_F_SUB(ptr, value)      ((__typeof__(*(ptr)))__sync_fetch_and_sub((ptr), (value)))
+//#define AO_F_OR(ptr, value)       ((__typeof__(*(ptr)))__sync_fetch_and_or((ptr), (value)))
+//#define AO_F_AND(ptr, value)      ((__typeof__(*(ptr)))__sync_fetch_and_and((ptr), (value)))
+//#define AO_F_XOR(ptr, value)      ((__typeof__(*(ptr)))__sync_fetch_and_xor((ptr), (value)))
+//#else
+//#error  \"can not supported atomic operation by gcc(v4.0.0+) buildin function.";
+//#endif    /* if (GCC_VERSION >= 40100) */
+///* 忽略返回值，算术和位操作 */
+//#define AO_INC(ptr)                 ((void)AO_ADD_F((ptr), 1))
+//#define AO_DEC(ptr)                 ((void)AO_SUB_F((ptr), 1))
+//#define AO_ADD(ptr, val)            ((void)AO_ADD_F((ptr), (val)))
+//#define AO_SUB(ptr, val)            ((void)AO_SUB_F((ptr), (val)))
+//#define AO_OR(ptr, val)             ((void)AO_OR_F((ptr), (val)))
+//#define AO_AND(ptr, val)            ((void)AO_AND_F((ptr), (val)))
+//#define AO_XOR(ptr, val)            ((void)AO_XOR_F((ptr), (val)))
+///* 通过掩码，设置某个位为1，并返还新的值 */
+//#define AO_BIT_ON(ptr, mask)        AO_OR_F((ptr), (mask))
+///* 通过掩码，设置某个位为0，并返还新的值 */
+//#define AO_BIT_OFF(ptr, mask)       AO_AND_F((ptr), ~(mask))
+///* 通过掩码，交换某个位，1变0，0变1，并返还新的值 */
+//#define AO_BIT_XCHG(ptr, mask)      AO_XOR_F((ptr), (mask))
+
+
 #pragma mark - fishhook
 
 #ifdef __aarch64__
@@ -339,12 +385,18 @@ static inline void push_call_record(id _self, Class _cls, SEL _cmd, uintptr_t lr
 
 static inline uintptr_t pop_call_record() {
     thread_call_stack *cs = get_thread_call_stack();
+
     int curIndex = cs->index;
     int nextIndex = cs->index--;
     thread_call_record *pRecord = &cs->stack[nextIndex];
     
     if (cs->is_main_thread && _call_record_enabled) {
         struct timeval now;
+        /*gettimeofday 系统调用可以获取系统当前挂钟时间（Wall-Clock Time）。它的第一个参数是一个指向 struct timeval 类型空间的指针。这个结构可以表示一个以秒为单位的时间。这个值被分为两个域，tv_sec 表示整秒数，而 tv_usec 表示剩余的微秒部分。整个 struct timeval 值表示的是从 Unix ''epoch''（UTC 时间 1970 年 1 月 1 日）开始到当前流逝的时间
+         用到精确到毫秒的时间
+         注意了其中的(int64_t)类型转换对于32位的系统是必须的，否则乘上1000会溢出
+         int64_t ts = (int64_t)tv.tv_sec*1000 + tv.tv_usec/1000;
+        */
         gettimeofday(&now, NULL);
         uint64_t time = (now.tv_sec % 100) * 1000000 + now.tv_usec;
         if (time < pRecord->time) {
@@ -359,6 +411,7 @@ static inline uintptr_t pop_call_record() {
                 _msRecordAlloc = 1024;
                 _msCallRecords = malloc(sizeof(msCallRecord) * _msRecordAlloc);
             }
+            
             //记录
             _msRecordNum++;
             if (_msRecordNum >= _msRecordAlloc) {
@@ -387,6 +440,23 @@ uintptr_t after_objc_msgSend() {
 // https://blog.nelhage.com/2010/10/amd64-and-va_arg/
 // http://infocenter.arm.com/help/topic/com.arm.doc.ihi0055b/IHI0055B_aapcs64.pdf
 // https://developer.apple.com/library/ios/documentation/Xcode/Conceptual/iPhoneOSABIReference/Articles/ARM64FunctionCallingConventions.html
+/*
+ ARM64架构的处理器有31个64bit的整数寄存器，分别被标记为x0 - x30。每一个寄存器也可以分离开来只使用低32bit，标记为w0 - w30。其中x0 - x7是用来传递函数的参数的。这意味着objc_msgSend接收的self参数放在x0上，_cmd参数放在x1上。
+ SP寄存器其实就是 x31，在指令编码中，使用 SP/WSP来进行对SP寄存器的访问。
+ 一般来说 arm64上 x0 – x7 分别会存放方法的前 8 个参数
+ 如果参数个数超过了8个，多余的参数会存在栈上，新方法会通过栈来读取。
+ 方法的返回值一般都在 x0 上。
+ 如果方法返回值是一个较大的数据结构时，结果会存在 x8 执行的地址上。
+ sp指向栈顶，也就是低地址.fp指向当前frame的栈底，也就是高地址
+ "stp x8, x9, [sp, #-16]!\n":将x8,x9保存到[sp, #-16]地址上去,[sp, #-16]!表示sp缓存的地址偏移16个字节位置,地址后面跟着一个感叹号，这是一个非常有趣的特性。它指示寄存器write-back，寄存器会先更新自己的值，之后再进行其他操作。上面的这条指令会先sp -= 16并保存到x12中
+ "mov x12, %0\n" :: "r"(value):将value值存入x12中
+ ldp x8, x9, [sp], #16: 从sp地址取出 16 byte数据，分别存入x8, x9. 然后 sp+=16;
+ sub sp, sp, #16 将sp- #16赋值给sp
+ add sp, sp, #16 将sp + #16赋值给sp
+ stp x8, x9, [sp, #-16]!:把 x8, x9的值存到 sp-16的地址上，并且把 sp-=16.
+ blr  x12:跳转到由x12目标寄存器指定的地址处，同时将下一条指令存放到X30寄存器中
+ ret;    // 返回指令，这一步直接执行lr的指令。
+ */
 /// 函数调用，value传入函数地址
 #define call(b, value) \
 __asm volatile ("stp x8, x9, [sp, #-16]!\n"); \
@@ -425,12 +495,15 @@ static void hook_Objc_msgSend() {
     // Save parameters.
     /// 保存寄存器参数信息
     save()
-    
+    //lr 是link register中的值
+    //mov x2, lr: 将x2设置为lr
     __asm volatile ("mov x2, lr\n");
+    //将设置x3设置为x4
     __asm volatile ("mov x3, x4\n");
     
     /// 函数调用，value传入函数地址
     // Call our before_objc_msgSend.
+    //blr 到before_objc_msgSend方法执行
     call(blr, &before_objc_msgSend)
     
     /// 还原寄存器参数信息
@@ -439,6 +512,7 @@ static void hook_Objc_msgSend() {
     
      /// 函数调用，value传入函数地址
     // Call through to the original objc_msgSend.
+    //跳转到orig_objc_msgSend指向地址的方法执行
     call(blr, orig_objc_msgSend)
     
     /// 保存寄存器参数信息
@@ -450,6 +524,7 @@ static void hook_Objc_msgSend() {
     call(blr, &after_objc_msgSend)
     
     // restore lr
+    //恢复lr
     __asm volatile ("mov lr, x0\n");
     
     /// 还原寄存器参数信息
@@ -494,13 +569,22 @@ msCallRecord *msGetCallRecords(int *num) {
     }
     return _msCallRecords;
 }
-
+//清除线程里有数据
+void msClearThreadDataRecords() {
+    thread_call_stack *cs = (thread_call_stack *)pthread_getspecific(_thread_key);
+    if (!cs) return;
+    if (cs->stack) free(cs->stack);
+    free(cs);
+     pthread_setspecific(_thread_key, NULL);
+}
 void msClearCallRecords() {
     if (_msCallRecords) {
         free(_msCallRecords);
         _msCallRecords = NULL;
     }
     _msRecordNum = 0;
+    //清除线程数据
+   // msClearThreadDataRecords();
 }
 
 #else

@@ -15,19 +15,11 @@
 		531F80E221FB3826005FC79C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 531F80E021FB3826005FC79C /* LaunchScreen.storyboard */; };
 		531F80E521FB3827005FC79C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F80E421FB3827005FC79C /* main.m */; };
 		531F80EF21FB3828005FC79C /* MSAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F80EE21FB3828005FC79C /* MSAPMTests.m */; };
-		531F80FA21FB3828005FC79C /* MSAPMUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F80F921FB3828005FC79C /* MSAPMUITests.m */; };
 		60B5D478295454502A6BDDC8 /* Pods_MSAPM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C5A4346592252B8E3173A8 /* Pods_MSAPM.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		531F80EB21FB3827005FC79C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 531F80CA21FB381E005FC79C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 531F80D121FB381E005FC79C;
-			remoteInfo = MSAPM;
-		};
-		531F80F621FB3828005FC79C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 531F80CA21FB381E005FC79C /* Project object */;
 			proxyType = 1;
@@ -52,7 +44,6 @@
 		531F80EA21FB3827005FC79C /* MSAPMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MSAPMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		531F80EE21FB3828005FC79C /* MSAPMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSAPMTests.m; sourceTree = "<group>"; };
 		531F80F021FB3828005FC79C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		531F80F521FB3828005FC79C /* MSAPMUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MSAPMUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		531F80F921FB3828005FC79C /* MSAPMUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSAPMUITests.m; sourceTree = "<group>"; };
 		531F80FB21FB3829005FC79C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A5C1DE8AA955E3F4D3C779D /* Pods_MSAPMTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MSAPMTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,13 +66,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				034A421600F8FD729D3F66FE /* Pods_MSAPMTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		531F80F221FB3828005FC79C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +109,6 @@
 			children = (
 				531F80D221FB381E005FC79C /* MSAPM.app */,
 				531F80EA21FB3827005FC79C /* MSAPMTests.xctest */,
-				531F80F521FB3828005FC79C /* MSAPMUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -205,24 +188,6 @@
 			productReference = 531F80EA21FB3827005FC79C /* MSAPMTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		531F80F421FB3828005FC79C /* MSAPMUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 531F810421FB3829005FC79C /* Build configuration list for PBXNativeTarget "MSAPMUITests" */;
-			buildPhases = (
-				531F80F121FB3828005FC79C /* Sources */,
-				531F80F221FB3828005FC79C /* Frameworks */,
-				531F80F321FB3828005FC79C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				531F80F721FB3828005FC79C /* PBXTargetDependency */,
-			);
-			name = MSAPMUITests;
-			productName = MSAPMUITests;
-			productReference = 531F80F521FB3828005FC79C /* MSAPMUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -236,10 +201,6 @@
 						CreatedOnToolsVersion = 10.0;
 					};
 					531F80E921FB3827005FC79C = {
-						CreatedOnToolsVersion = 10.0;
-						TestTargetID = 531F80D121FB381E005FC79C;
-					};
-					531F80F421FB3828005FC79C = {
 						CreatedOnToolsVersion = 10.0;
 						TestTargetID = 531F80D121FB381E005FC79C;
 					};
@@ -260,7 +221,6 @@
 			targets = (
 				531F80D121FB381E005FC79C /* MSAPM */,
 				531F80E921FB3827005FC79C /* MSAPMTests */,
-				531F80F421FB3828005FC79C /* MSAPMUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -277,13 +237,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		531F80E821FB3827005FC79C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		531F80F321FB3828005FC79C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -317,7 +270,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MSAPM/Pods-MSAPM-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MSAPM/Pods-MSAPM-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/MSAPM/MSAPM.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -326,7 +279,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MSAPM/Pods-MSAPM-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MSAPM/Pods-MSAPM-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		49831C196E56D63233096887 /* [CP] Check Pods Manifest.lock */ = {
@@ -368,14 +321,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		531F80F121FB3828005FC79C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				531F80FA21FB3828005FC79C /* MSAPMUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -383,11 +328,6 @@
 			isa = PBXTargetDependency;
 			target = 531F80D121FB381E005FC79C /* MSAPM */;
 			targetProxy = 531F80EB21FB3827005FC79C /* PBXContainerItemProxy */;
-		};
-		531F80F721FB3828005FC79C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 531F80D121FB381E005FC79C /* MSAPM */;
-			targetProxy = 531F80F621FB3828005FC79C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -530,9 +470,24 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R4P699Z5PS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/基础服务/TDShareSDK(分享组件)/PlatformSDK/QQShareSDK",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/Vendor(第三方)/GT3Captcha",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/Vendor(第三方)/TDModelKit(模型解析)",
+				);
 				INFOPLIST_FILE = MSAPM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/基础服务/TDShareSDK(分享组件)/PlatformSDK/libWeiboSDK",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/基础服务/TDShareSDK(分享组件)/PlatformSDK/WeChatSDK",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/Vendor(第三方)/TDSecuritySDK",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = tuandai.com.MSAPM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -546,9 +501,24 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R4P699Z5PS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/基础服务/TDShareSDK(分享组件)/PlatformSDK/QQShareSDK",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/Vendor(第三方)/GT3Captcha",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/Vendor(第三方)/TDModelKit(模型解析)",
+				);
 				INFOPLIST_FILE = MSAPM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/基础服务/TDShareSDK(分享组件)/PlatformSDK/libWeiboSDK",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/基础服务/TDShareSDK(分享组件)/PlatformSDK/WeChatSDK",
+					"$(PROJECT_DIR)/MSAPM/TDFramework5.0/Vendor(第三方)/TDSecuritySDK",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = tuandai.com.MSAPM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -560,12 +530,18 @@
 			baseConfigurationReference = 3B166899E61E1E0377DC7D0F /* Pods-MSAPMTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = R4P699Z5PS;
 				INFOPLIST_FILE = MSAPMTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = tuandai.com.MSAPMTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MSAPM.app/MSAPM";
 			};
@@ -576,42 +552,19 @@
 			baseConfigurationReference = 6F23867390F631E4BD84EFA6 /* Pods-MSAPMTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = R4P699Z5PS;
 				INFOPLIST_FILE = MSAPMTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = tuandai.com.MSAPMTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MSAPM.app/MSAPM";
-			};
-			name = Release;
-		};
-		531F810521FB3829005FC79C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R4P699Z5PS;
-				INFOPLIST_FILE = MSAPMUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tuandai.com.MSAPMUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MSAPM;
-			};
-			name = Debug;
-		};
-		531F810621FB3829005FC79C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R4P699Z5PS;
-				INFOPLIST_FILE = MSAPMUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tuandai.com.MSAPMUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MSAPM;
 			};
 			name = Release;
 		};
@@ -641,15 +594,6 @@
 			buildConfigurations = (
 				531F810221FB3829005FC79C /* Debug */,
 				531F810321FB3829005FC79C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		531F810421FB3829005FC79C /* Build configuration list for PBXNativeTarget "MSAPMUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				531F810521FB3829005FC79C /* Debug */,
-				531F810621FB3829005FC79C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

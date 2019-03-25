@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import <MSAPM/MSCallTrace.h>
+#import <MSAPM/MSAPMManager.h>
 @interface AppDelegate ()
 
 @end
@@ -17,7 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [MSCallTrace start];
+    //[MSCallTrace start];
+    [[MSAPMManager sharedInstance]startToCollectPerformanceData];
     return YES;
 }
 

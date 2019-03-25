@@ -37,6 +37,7 @@
     dispatch_semaphore_t objectSemaphore;
     //锁 数据安全
     NSCondition * objectCondition;
+    dispatch_source_t timer;
 }
 @property(nonatomic,strong)NSMutableString *normalDataStr;
 @property(nonatomic,strong)NSMutableString *normalObjectDataStr;
@@ -114,6 +115,15 @@ static inline dispatch_queue_t td_log_IO_ObjectProducequeue() {
         td_log_IO_ObjectProducequeue = dispatch_queue_create("com.tuandaiguo.td_log_IO_ObjectProducequeue", NULL);
     });
     return td_log_IO_ObjectProducequeue;
+}
+//写入Object内存的队列(定时器)
+static inline dispatch_queue_t td_log_IO_ObjectTimerqueue() {
+    static dispatch_queue_t td_log_IO_ObjectTimerqueue;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        td_log_IO_ObjectTimerqueue = dispatch_queue_create("com.tuandaiguo.td_log_IO_ObjectTimerqueue", NULL);
+    });
+    return td_log_IO_ObjectTimerqueue;
 }
 /*
  因为类的+ load方法在main函数执行之前调用，所以我们可以在+ load方法记录开始时间，同时监听UIApplicationDidFinishLaunchingNotification通知，收到通知时将时间相减作为应用启动时间，这样做有一个好处，不需要侵入到业务方的main函数去记录开始时间点。
@@ -277,9 +287,41 @@ static NSString * td_resource_recordDataIntervalTime_callback_key;
     if (isStartObjectMethodsMonitor) {
         [MSCallTrace start];
         [MSCallTrace sharedInstance].delegate = self;
+//        if (self ->timer == nil) {
+//            self ->timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, td_log_IO_ObjectTimerqueue());
+//            // ②设置定时开始时间 间隔 精确度
+//            dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 0.1 * NSEC_PER_SEC);
+//            // ③设置定时执行任务
+//            dispatch_source_set_event_handler(timer, ^{
+//                
+//                [MSCallTrace asyncSave];
+//                
+//            });
+//        }
+//        // ④激活定时器
+//        dispatch_resume(timer);
        // [self writeObjectPerformanceDadaToDisk];
     }else{
         [MSCallTrace stop];
+        //挂起定时器
+       // [self pauseTimer];
+    }
+}
+
+-(void)pauseTimer{
+    if(self ->timer){
+        dispatch_suspend(self ->timer);
+    }
+}
+-(void) resumeTimer{
+    if(self ->timer){
+        dispatch_resume(self ->timer);
+    }
+}
+-(void) stopTimer{
+    if(self ->timer){
+        dispatch_source_cancel(self ->timer);
+        self ->timer = nil;
     }
 }
 //改变监控指标状态 Indicators:监控指标,isStartMonitor:监控是否开启与关闭
@@ -402,7 +444,7 @@ static NSString * td_resource_recordDataIntervalTime_callback_key;
     //设置基本性能数据间隔
     self.basicTime = 1;
     self.isStartMonitor = YES;
-    self.isStartObjectMethodsMonitor = YES;
+    self.isStartObjectMethodsMonitor = NO;
     
 }
 // 文件写入操作
@@ -507,7 +549,7 @@ static NSString * td_resource_recordDataIntervalTime_callback_key;
     logNum += 1;
 }
 - (void)writeSandbox {
-    [MSCallTrace asyncSave];
+    [MSCallTrace stopSaveAndClean];
 }
 //清空txt文件
 - (void)clearTxt {
