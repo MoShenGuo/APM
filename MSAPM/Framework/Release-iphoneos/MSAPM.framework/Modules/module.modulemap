@@ -1,0 +1,11 @@
+framework module MSAPM {
+  umbrella header "MSAPM.h"
+
+  export *
+  module * { export * }
+}
+
+module MSAPM.Swift {
+    header "MSAPM-Swift.h"
+    requires objc
+}
